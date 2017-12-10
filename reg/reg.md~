@@ -11,7 +11,7 @@ El sensor FC-28 porta incorporat un potenciòmetre que permet ajustar la sensibi
 
 En el nostre projecte connectarem el FC-28 a la Raspberry Pi de manera que podrem llegir la quantitat de tensió de sortida del sensor i que ens pugui dir si el valor d'humitat detectada està per sota de determinat valor llindar. D'aquesta manera sabrem que les plantes necessiten reg.
 
-<img src="img/fc-28.jpg" width="400px">
+<img src="img/fc-28.jpg" width=400>
 
 ## Components bàsics per a la construcció del prototip
 
@@ -31,7 +31,7 @@ El sensor d'humitat té quatre pins: AO, DO, VCC i GND. El pin VCC correspon a l
 
 La figura inferior ens mostra el circuit esquematic que muntarem pel nostre sensor.
 
-<img src="img/circuit_reg.png" width="600px">
+<img src="img/circuit_reg.png" width=600>
 
 
 Per alimentar el sensor d'humitat connectarem el pin VCC del FC-28 al terminal de 5 V de la RPi (pin 2) i el terminal GND del sensor al terminal GND de la RPi (pin 34). La sortida del sensor (pin AO) va connectat a una resistència i un condensador que serviran de conversor A/D.

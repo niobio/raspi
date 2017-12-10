@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ca-ES">
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="raspi : Raspberry Pi projects">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=56936fbd3327648b383b7e7d24f5c98f42d3e1e4">
+
+<!-- Begin Jekyll SEO tag v2.3.0 -->
+<title>Sensors analògics amb la Raspberry Pi | raspi</title>
+<meta property="og:title" content="Sensors analògics amb la Raspberry Pi" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Raspberry Pi projects" />
+<meta property="og:description" content="Raspberry Pi projects" />
+<link rel="canonical" href="http://localhost:4000/sensors/sensor_analog.html" />
+<meta property="og:url" content="http://localhost:4000/sensors/sensor_analog.html" />
+<meta property="og:site_name" content="raspi" />
+<script type="application/ld+json">
+{"name":null,"description":"Raspberry Pi projects","author":null,"@type":"WebPage","url":"http://localhost:4000/sensors/sensor_analog.html","publisher":null,"image":null,"headline":"Sensors analògics amb la Raspberry Pi","dateModified":null,"datePublished":null,"sameAs":null,"mainEntityOfPage":null,"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true,
+    }
+  });
+</script>
+<script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+<!--      <a id="forkme_banner" href="http://github.com/niobio/raspi">View on GitHub</a>
+
+          <h1 id="project_title">raspi</h1>
+          <h2 id="project_tagline">Raspberry Pi projects</h2>
+-->
+          <h1 id="project_title">Projectes amb Raspberry Pi</h1>
+          <h4 id="project_tagline">José Luis Tourón</h4>
+
+
+
+          
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        
+<h1 id="sensors-analògics-amb-la-raspberry-pi">Sensors analògics amb la Raspberry Pi</h1>
+
+<p>Els sensors són dispositius que obtenen informació dels seus voltants i la poden transmetre a la Raspberry per a que la pugui procesar i faci alguna acció a partir d’aquesta informació.</p>
+
+<p>De sensors hi ha de dos tipus:</p>
+
+<ul>
+  <li>
+    <p><strong>Digitals</strong>: poden prendre dos estats possibles (encès/apagat, on/off, etc.). Exemples típics són els interruptors o els polsadors que es poden fer servir com sensors tàctils.</p>
+  </li>
+  <li>
+    <p><strong>Analògics</strong>: poden prendre més de dos valors. Són sensors analògics els sensors de temperatura, so, humitat, llum, etc. Generalment aquests sensors donen un voltatge o canvien el seu valor resistiu quan canvia la variable de l’entorn que mesuren, d’aquesta manera, amb un adequat calibratge, es pot mesurar aquesta variable.</p>
+  </li>
+</ul>
+
+<p>El problema que presenta la placa Raspberry Pi és que les seves entrades són digitals i no en té cap d’analògica, pel que hem de crear un conversor analògic-digital (A/D) per a poder mesurar una variable analògica a través d’una entrada digital.</p>
+
+<p>Existeixen xips que fan aquesta conversió, però la manera més senzilla de fer-la és utilitzant un condensador. Els condensadors són dispositius electrònics que funcionen com acumuladors de càrrega i que poden tenir capacitats d’emmagatzematge diferents. La clau del funcionament del condensador com a conversor A/D radica en que el temps que tarda a carregar-se depèn de la intensitat de corrent que hi circula, per tant, si mesurem el temps que tarda a carregarse estarem mesurant la intesitat de corrent i així podem estimar els valor de la variable analògica.</p>
+
+<h2 id="connectar-un-sensor-resistiu-a-la-raspberry-amb-un-condensador">Connectar un sensor resistiu a la Raspberry amb un condensador</h2>
+
+<p>Utilitzarem una resistència variable (potenciòmetre) com a sensor. El potenciòmetre és una resistència per a la qual podem variar el seu valor girant un eix, tenim exemples d’aquest tipus de dispositius en els controls de volum d’alguns aparells amplificadots de so.</p>
+
+<p>Per a fer la connexió necessitarem:</p>
+
+<ul>
+  <li>Un protoboard i cables.</li>
+  <li>Un potenciómetre de $10\,\mathrm{k\Omega}$.</li>
+  <li>Dos resistències de $1\,\mathrm{k\Omega}$.</li>
+  <li>Un condensador de 330 nF.</li>
+</ul>
+
+<p>A la figura inferior podem observar el connexionat.</p>
+
+<p><img src="img/potenc.png" width="400px" /></p>
+
+<p>El circuit esquemàtic és el següent:</p>
+
+<p><img src="img/potenc_2.png" width="400px" /></p>
+
+<p>Les resistències Rc i Rd tenen la funció de protegir els pins de la Raspberry d’intensitats de corrents excesives en cas que la resistència del potenciòmetre Rt prengui el valor 0</p>
+
+<p>El codi per al funcionament del sensor és el següent:</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">RPi.GPIO</span> <span class="kn">as</span> <span class="nn">GPIO</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="n">GPIO</span><span class="o">.</span><span class="n">setmode</span><span class="p">(</span><span class="n">GPIO</span><span class="o">.</span><span class="n">BOARD</span><span class="p">)</span>
+
+<span class="c"># El pin a carrega el condensador a través d'una resistència fixa d'1k </span>
+<span class="c"># i el potenciómetre en sèrie.</span>
+<span class="c"># El pin b descarrega el condensador a través de la resistència d'1k</span>
+
+<span class="n">pin_a</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="n">pin_b</span> <span class="o">=</span> <span class="mi">16</span>
+
+<span class="c"># Funció per la descàrrega del condensador, deixant-lo buit per a començar la càrrega</span>
+<span class="k">def</span> <span class="nf">descarrega</span><span class="p">():</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">pin_a</span><span class="p">,</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">IN</span><span class="p">)</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">pin_b</span><span class="p">,</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">OUT</span><span class="p">)</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">pin_b</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="c"># Funció que retorna el temps de càrrega del condensador en microsegons fins arribar</span>
+<span class="c"># al nivell HIGH, el qual és major o igual a 1.65V.</span>
+<span class="k">def</span> <span class="nf">temps_carrega</span><span class="p">():</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">pin_b</span><span class="p">,</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">IN</span><span class="p">)</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">pin_a</span><span class="p">,</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">OUT</span><span class="p">)</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">pin_a</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">GPIO</span><span class="o">.</span><span class="nb">input</span><span class="p">(</span><span class="n">pin_b</span><span class="p">):</span>
+        <span class="k">pass</span>
+    <span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000000</span>
+
+<span class="c"># Funció que pren el temps de càrrega del condensador com a lectura analògica</span>
+<span class="c"># després de primer descarregar el condensador</span>
+<span class="k">def</span> <span class="nf">lectura_analog</span><span class="p">():</span>
+    <span class="n">descarrega</span><span class="p">()</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">temps_carrega</span><span class="p">()</span>
+    <span class="n">descarrega</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">t</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">lectura_analog</span><span class="p">())</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
+</code></pre>
+</div>
+
+<p>El programa fa la lectura del temps de càrrega del condensador cada mig segon i l’imprimeix a la pantalla del terminal. Amb un adequat calibratge es pot transformar el temps en valors resistius, ja que la resistència és proporcional al temps de càrrega. Si en comptes d’un potenciòmetre haguèssim fet servir una LDR (resistència variable amb la llum) el temps de càrrega hauria estat inversament proporcional a la intensitat de llum.</p>
+
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        
+        <p class="copyright">raspi maintained by <a href="http://github.com/niobio">niobio</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+  </body>
+</html>

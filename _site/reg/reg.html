@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ca-ES">
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="raspi : Raspberry Pi projects">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=56936fbd3327648b383b7e7d24f5c98f42d3e1e4">
+
+<!-- Begin Jekyll SEO tag v2.3.0 -->
+<title>Sistema automatic de reg amb Raspberry Pi | raspi</title>
+<meta property="og:title" content="Sistema automatic de reg amb Raspberry Pi" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Raspberry Pi projects" />
+<meta property="og:description" content="Raspberry Pi projects" />
+<link rel="canonical" href="http://localhost:4000/reg/reg.html" />
+<meta property="og:url" content="http://localhost:4000/reg/reg.html" />
+<meta property="og:site_name" content="raspi" />
+<script type="application/ld+json">
+{"name":null,"description":"Raspberry Pi projects","author":null,"@type":"WebPage","url":"http://localhost:4000/reg/reg.html","publisher":null,"image":null,"headline":"Sistema automatic de reg amb Raspberry Pi","dateModified":null,"datePublished":null,"sameAs":null,"mainEntityOfPage":null,"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true,
+    }
+  });
+</script>
+<script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+<!--      <a id="forkme_banner" href="http://github.com/niobio/raspi">View on GitHub</a>
+
+          <h1 id="project_title">raspi</h1>
+          <h2 id="project_tagline">Raspberry Pi projects</h2>
+-->
+          <h1 id="project_title">Projectes amb Raspberry Pi</h1>
+          <h4 id="project_tagline">José Luis Tourón</h4>
+
+
+
+          
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        
+<h1 id="sistema-automatic-de-reg-amb-raspberry-pi">Sistema automatic de reg amb Raspberry Pi</h1>
+
+<p>En aquest projecte dissenyarem un sistema de reg automàtic per a un hort o un parc. El sistema s’ha d’activar només quan les plantes necessiten aigua. En el nostre projecte utilitzarem una placa Raspberry Pi per a activar una vàlvula que roman tancada fins que la placa decideix obrir-la per regar les plantes, la Raspberry Pi decidirà quan activar la vàlvula depenent dels valors d’humitat del sòl. Per a mesurar el grau d’humitat farem servir un sensor d’humitat model FC-28.</p>
+
+<h2 id="el-sensor-dhumitat">El sensor d’humitat</h2>
+
+<p>El sensor que farem servir serà el model FC-28. La manera que té aquest sensor de mesurar el nivell d’humitat és a través del seu voltatge de sortida, quant més humitat hi ha més alt és el voltatge de sortida i, a l’inrevés, si el nivell d’humitat és baix el voltatge de sortida serà baix.</p>
+
+<p>El sensor FC-28 porta incorporat un potenciòmetre que permet ajustar la sensibilitat a la humitat, per tant, serveix com una manera de calibrar quin serà el valor de voltatge que tindrà la sortida en relació a la quantitat d’humitat a la que està exposat.</p>
+
+<p>En el nostre projecte connectarem el FC-28 a la Raspberry Pi de manera que podrem llegir la quantitat de tensió de sortida del sensor i que ens pugui dir si el valor d’humitat detectada està per sota de determinat valor llindar. D’aquesta manera sabrem que les plantes necessiten reg.</p>
+
+<p><img src="img/fc-28.jpg" width="400px" /></p>
+
+<h2 id="components-bàsics-per-a-la-construcció-del-prototip">Components bàsics per a la construcció del prototip</h2>
+
+<ul>
+  <li>Sensor d’humitat FC-28.</li>
+  <li>Placa Raspberry Pi.</li>
+  <li>Placa de prototipatge ràpid (protoboard) i cables.</li>
+  <li>Condensador de $10\,\mathrm{\mu F}$</li>
+  <li>2 resistències de $1\,\mathrm{k\Omega}$</li>
+  <li>1 resistència de $220\,\Omega$</li>
+  <li>1 relé</li>
+  <li>1 vàlvula de 12V DC</li>
+  <li>1 adaptador de 12V per alimentar la vàlvula.</li>
+</ul>
+
+<p>El sensor d’humitat té quatre pins: AO, DO, VCC i GND. El pin VCC correspon a l’alimentació, la qual ha d’estar entre 3,3 V i 5 V per a que pugui ser operatiu, el pin GND correspon a la connexió a terra, per tant, per alimentar el sensor hem d’aplicar entre 3,3 V i 5 V entre VCC i GND. El terminal AO és la sortida analògica i el terminal DO és la sortida digital. Nosaltres farem servir la sortida analògica, ja que ens permetrà un millor calibratge del sensor.</p>
+
+<h2 id="esquema-del-circuit-sensor">Esquema del circuit sensor</h2>
+
+<p>La figura inferior ens mostra el circuit esquematic que muntarem pel nostre sensor.</p>
+
+<p><img src="img/circuit_reg.png" width="600px" /></p>
+
+<p>Per alimentar el sensor d’humitat connectarem el pin VCC del FC-28 al terminal de 5 V de la RPi (pin 2) i el terminal GND del sensor al terminal GND de la RPi (pin 34). La sortida del sensor (pin AO) va connectat a una resistència i un condensador que serviran de conversor A/D.</p>
+
+<p>L’actuador del circuit és una vàlvula que funciona amb una alimentació de 12 V de corrent contínua. Per a controlar la vàlvula farem servir un relé connectat al pin 12 de la Raspberry.</p>
+
+<p>A continuació es pot veure el codi Python per fer funcionar el sistema de reg.</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">RPi.GPIO</span> <span class="kn">as</span> <span class="nn">GPIO</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="n">GPIO</span><span class="o">.</span><span class="n">setmode</span><span class="p">(</span><span class="n">GPIO</span><span class="o">.</span><span class="n">BOARD</span><span class="p">)</span>
+
+<span class="c"># El pin a carrega el condensador a través d'una resistència fixa d'1k </span>
+<span class="c"># i el potenciómetre en sèrie.</span>
+<span class="c"># El pin b descarrega el condensador a través de la resistència d'1k</span>
+
+<span class="n">pin_a</span> <span class="o">=</span> <span class="mi">16</span>
+<span class="n">pin_b</span> <span class="o">=</span> <span class="mi">18</span>
+<span class="n">pinout</span> <span class="o">=</span> <span class="mi">12</span>
+
+<span class="n">GPIO</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">pinout</span><span class="p">,</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">OUT</span><span class="p">)</span>
+
+<span class="c"># Funció per la descàrrega del condensador, deixant-lo buit per a començar la càrrega</span>
+<span class="k">def</span> <span class="nf">descarrega</span><span class="p">():</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">pin_a</span><span class="p">,</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">IN</span><span class="p">)</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">pin_b</span><span class="p">,</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">OUT</span><span class="p">)</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">pin_b</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="c"># Funció que retorna el temps de càrrega del condensador en microsegons fins arribar</span>
+<span class="c"># al nivell HIGH, el qual és major o igual a 1.65V.</span>
+<span class="k">def</span> <span class="nf">temps_carrega</span><span class="p">():</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">pin_b</span><span class="p">,</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">IN</span><span class="p">)</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">pin_a</span><span class="p">,</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">OUT</span><span class="p">)</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">pin_a</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">GPIO</span><span class="o">.</span><span class="nb">input</span><span class="p">(</span><span class="n">pin_b</span><span class="p">):</span>
+        <span class="k">pass</span>
+    <span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000000</span>
+
+<span class="c"># Funció que pren el temps de càrrega del condensador com a lectura analògica</span>
+<span class="c"># després de primer descarregar el condensador</span>
+<span class="k">def</span> <span class="nf">lectura_analog</span><span class="p">():</span>
+    <span class="n">descarrega</span><span class="p">()</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">temps_carrega</span><span class="p">()</span>
+    <span class="n">descarrega</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">t</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">lectura_analog</span><span class="p">()</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">t</span> <span class="o">&lt;</span> <span class="mi">70</span><span class="p">:</span>
+            <span class="n">GPIO</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">pinout</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">GPIO</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">pinout</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
+</code></pre>
+</div>
+
+<p>El programa fa la lectura del temps de càrrega del condensador cada 5 segons i l’imprimeix a la pantalla del terminal. Si la lectura és inferior a 70 el pin de sortida es posa en <code class="highlighter-rouge">True</code> i s’obre la vàlvula per a que passi l’aigua.</p>
+
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        
+        <p class="copyright">raspi maintained by <a href="http://github.com/niobio">niobio</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+  </body>
+</html>

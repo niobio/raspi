@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ca-ES">
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="raspi : Raspberry Pi projects">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=56936fbd3327648b383b7e7d24f5c98f42d3e1e4">
+
+<!-- Begin Jekyll SEO tag v2.3.0 -->
+<title>Encendre un led amb Raspberry Pi | raspi</title>
+<meta property="og:title" content="Encendre un led amb Raspberry Pi" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Raspberry Pi projects" />
+<meta property="og:description" content="Raspberry Pi projects" />
+<link rel="canonical" href="http://localhost:4000/led/led.html" />
+<meta property="og:url" content="http://localhost:4000/led/led.html" />
+<meta property="og:site_name" content="raspi" />
+<script type="application/ld+json">
+{"name":null,"description":"Raspberry Pi projects","author":null,"@type":"WebPage","url":"http://localhost:4000/led/led.html","publisher":null,"image":null,"headline":"Encendre un led amb Raspberry Pi","dateModified":null,"datePublished":null,"sameAs":null,"mainEntityOfPage":null,"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true,
+    }
+  });
+</script>
+<script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+<!--      <a id="forkme_banner" href="http://github.com/niobio/raspi">View on GitHub</a>
+
+          <h1 id="project_title">raspi</h1>
+          <h2 id="project_tagline">Raspberry Pi projects</h2>
+-->
+          <h1 id="project_title">Projectes amb Raspberry Pi</h1>
+          <h4 id="project_tagline">José Luis Tourón</h4>
+
+
+
+          
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        
+<h1 id="encendre-un-led-amb-raspberry-pi">Encendre un led amb Raspberry Pi</h1>
+
+<p>En aquest exercici utilitzarem els pins GPIO de la RPi per a controlar un LED.
+Necessitarem el següent material:</p>
+
+<ul>
+  <li>1 LED</li>
+  <li>1 resistència de 470 ohm</li>
+  <li>1 Protoboard</li>
+  <li>Cables</li>
+  <li>Placa Raspberry Pi, teclat, pantalla i ratolí.</li>
+</ul>
+
+<p>En la figura de sota es pot observar l’esquema del circuit. El LED  està connectat el pin 18 de la RPi (no confondre amb la numeració BCM que correspon al GPIO24). En sèrie amb el LED hi ha una resistència de 470 ohm. La raó d’aquesta resistència és protegir el LED. Per saber com es calcula el valor de la resistència de protecció feu clic aquí. El circuit es tanca amb la resistència connectada a terra (GND).</p>
+
+<p><img src="img/led_blink_esquema.png" width="400px" /></p>
+
+<p>En la figura inferior es mostra la representació física del circuit. Una cosa a tenir en compte és que els LED tenen polaritat, es a dir, no és igual connectar-los d’una manera que d’altra. Hem de connectar l’ànode al potencial (voltatge) més alt, en cas contrari el LED no s’encendrà. Per a més informació sobre com funciona un LED feu clic aquí.</p>
+
+<p><img src="img/led_blink_esquema_bb.png" width="300px" /></p>
+
+<p>Per a encendre i apagar el LED farem servir el programa que apareix a sota on utilitzem la biblioteca RPi.GPIO per a controlar els pins.</p>
+
+<h2 id="controlar-el-led">Controlar el led</h2>
+
+<p>Per a encendre el led farem un programa en llenguatge Python. Python conté un mòdul que permet controlar els pins anomenats GPIO (General Purpose Input/Output) de la Raspberry Pi. El mòdul es diu <code class="highlighter-rouge">RPi.GPIO</code> i l’hem d’importar al començament del programa per a poder treballar amb ell.</p>
+
+<p>Per escriure el programa podem fer servir l’entorn de desenvolupament IDLE que ve preinstal·lat o el podem escriure en l’editor de text que porta la Raspberry Pi.</p>
+
+<p>El codi del programa serà:</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">RPi.GPIO</span> <span class="nn">ad</span> <span class="nn">GPIO</span>
+
+<span class="n">GPIO</span><span class="o">.</span><span class="n">setmode</span><span class="p">(</span><span class="n">GPIO</span><span class="o">.</span><span class="n">BOARD</span><span class="p">)</span>
+<span class="n">GPIO</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">OUT</span><span class="p">)</span>
+
+<span class="n">GPIO</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<p>Per a encendre el led ferem el següent:</p>
+
+<ol>
+  <li>
+    <p>Importarem el mòdul RPi.GPIO per a poder comunicar-nos amb els pins de la Raspberry, l’importem amb l’àlies GPIO per a ser més breus.</p>
+  </li>
+  <li>
+    <p>El següent que hem de fer és dir quina manera farem servir per a comptar els pins (n’hi ha dues maneres: amb la numeració de la placa BOARD i amb la numeració del xip BCM), nosaltres sempre farem servir la numeració BOARD perquè és més fàcil.</p>
+  </li>
+  <li>Definirem quin pin farem servir i si el farem servir com entrada o com sortida amb <code class="highlighter-rouge">GPIO.setup(18, GPIO.OUT)</code>. En el nostre cas utilitzarem el pin 18 i el definim com sortida.</li>
+  <li>Per últim donarem l’ordre d’encendre el led això es fa amb <code class="highlighter-rouge">GPIO.output(18, True)</code>. On <code class="highlighter-rouge">True</code> indica que la sortida està encesa, si volem apagar-la hem de posar <code class="highlighter-rouge">False</code>. També podem posar 1 o <code class="highlighter-rouge">HIGH</code> en comptes de <code class="highlighter-rouge">True</code> i 0 o <code class="highlighter-rouge">LOW</code> en comptes de <code class="highlighter-rouge">False</code>.</li>
+</ol>
+
+<p>Per a provar el nostre codi el podem executar des de l’IDLE o, un cop guardat el fitxer, obrim un terminal fent clic a l’icona del terminal a la barra de tasques i lexecutem des del terminal escrivint:</p>
+
+<p><code class="highlighter-rouge">python &lt;nom del fitxer&gt;</code></p>
+
+<h2 id="fer-que-el-led-faci-pampallugues">Fer que el led faci pampallugues</h2>
+
+<p>Si volem que el led s’encengui i apagui alternativament hem d’importar el mòdul <code class="highlighter-rouge">time</code> per gestionar el temps. Per fer que el led s’ensengui i s’apagui en intervals de 1 segon podem escriure el següent codi:</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">RPi.GPIO</span> <span class="kn">as</span> <span class="nn">GPIO</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="n">GPIO</span><span class="o">.</span><span class="n">setmode</span><span class="p">(</span><span class="n">GPIO</span><span class="o">.</span><span class="n">BOARD</span><span class="p">)</span>
+<span class="n">GPIO</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">OUT</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    
+</code></pre>
+</div>
+
+<p>En aquest cas tenim que el led s’encèn i s’apaga 10 vegades (bucle <code class="highlighter-rouge">for</code>) romanent 1 segon encès i 1 segon apagat en cada cicle.</p>
+
+<h2 id="millorant-el-codi">Millorant el codi</h2>
+
+<p>El codi anterior és completament funcional però podem plantejar el següent codi com una millora, afegint-hi comentaris i separant la part de configuració (funció <code class="highlighter-rouge">setup</code>, que s’executa només una vegada) i el bucle principal (<code class="highlighter-rouge">main</code>). A continuació podem observar el llistat del codi:</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c">#!/usr/bin/python</span>
+<span class="c">#LEDtest.py</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">RPi.GPIO</span> <span class="kn">as</span> <span class="nn">GPIO</span>
+
+<span class="c"># LED Blink</span>
+<span class="c">#HARDWARE SETUP</span>
+<span class="c"># P1</span>
+<span class="c"># 2[======X=L===========]40</span>
+<span class="c"># 1[====================]39</span>
+<span class="c"># X=GND (14) L=LED (18)</span>
+
+<span class="n">LED_ON</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">LED_OFF</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c">#LED CONFIG - Set GPIO Ports</span>
+<span class="n">LED</span> <span class="o">=</span> <span class="mi">18</span>
+
+<span class="c"># Funció que defineix les característiques dels pins</span>
+<span class="k">def</span> <span class="nf">led_setup</span><span class="p">():</span>
+    <span class="c">#Setup the wiring</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">setmode</span><span class="p">(</span><span class="n">GPIO</span><span class="o">.</span><span class="n">BOARD</span><span class="p">)</span>   <span class="c">#Mode BOARD de comptar els pins</span>
+    <span class="c">#Setup Port</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">LED</span><span class="p">,</span><span class="n">GPIO</span><span class="o">.</span><span class="n">OUT</span><span class="p">)</span>   <span class="c">#El PIN 18 es defineix com sortida</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">led_setup</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">GPIO</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">LED</span><span class="p">,</span><span class="n">LED_ON</span><span class="p">)</span>   <span class="c">#S'encén el LED</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"LED ON"</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>             <span class="c">#Esperem 5 segons</span>
+        <span class="n">GPIO</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">LED</span><span class="p">,</span><span class="n">LED_OFF</span><span class="p">)</span>  <span class="c"># Apaguem el LED</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"LED OFF"</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>             <span class="c">#Esperem 5 segons</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Tot tancat. FI"</span><span class="p">)</span>
+<span class="c">#End</span>
+</code></pre>
+</div>
+
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        
+        <p class="copyright">raspi maintained by <a href="http://github.com/niobio">niobio</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+  </body>
+</html>
