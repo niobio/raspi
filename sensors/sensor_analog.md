@@ -1,4 +1,3 @@
-
 # Sensors analògics amb la Raspberry Pi
 
 Els sensors són dispositius que obtenen informació dels seus voltants i la poden transmetre a la Raspberry per a que la pugui procesar i faci alguna acció a partir d'aquesta informació.

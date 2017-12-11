@@ -1,3 +1,6 @@
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
 
 # Sensors analògics amb la Raspberry Pi
 
@@ -26,11 +29,11 @@ Per a fer la connexió necessitarem:
 
 A la figura inferior podem observar el connexionat.
 
-<img src="img/potenc.png" width=400>
+<img src="img/potenc.png" width="400px">
 
 El circuit esquemàtic és el següent:
 
-<img src="img/potenc_2.png" width=400>
+<img src="img/potenc_2.png" width="400px">
 
 Les resistències Rc i Rd tenen la funció de protegir els pins de la Raspberry d'intensitats de corrents excesives en cas que la resistència del potenciòmetre Rt prengui el valor 0
 
