@@ -1,0 +1,2 @@
+IP de configuració VNC server de Raspberry Pi: 169.254.0.2
+IP de configuració de de VNC viewer: 169.254.0.1
