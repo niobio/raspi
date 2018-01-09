@@ -155,7 +155,7 @@ El relé es pot fer servir com commutador o com interruptor i, en lloc de ser ac
 Al tancar l'interruptor 1, l'electroimant del relé es posa en funcionament i atreula petita placa metàl·lica 2. La palanca de la placa, en ser atreta per l'electroimant, empeny el contacte 4 i el separa de 3, amb la qual cosa s'interromp el corrent en el circuit de la bombeta i aquesta no s'encén.
 
 <figure>
-<img src="img/rele01.png">
+<img src="img/rele01.png" width="400px">
 <figcaption>El relé utilitzat com interruptor.</figcaption>
 </figure>
 
@@ -163,7 +163,7 @@ Al tancar l'interruptor 1, l'electroimant del relé es posa en funcionament i at
 Al tancar l'interruptor 1, l'electroimant del relé torna a atreure la placa metàl·lica 2. La palanca de la placa, en ser atreta per l'electroimant, empeny el contacte 4 i el separa de 3, amb la qual cosa s'interromp el corrent del circuit de la bombeta. Però el contacte 4 empeny contra el 5 i això fa que es posi enfuncionament el motor.
 
 <figure>
-<img src="img/rele02.png">
+<img src="img/rele02.png" width="400px">
 <figcaption>El relé utilitzat com commutador.</figcaption>
 </figure>
 
