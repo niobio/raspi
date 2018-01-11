@@ -105,6 +105,15 @@ $$I=I_1+I_2+I_3$$
 
 $$R=\frac{1}{\frac{1}{R_1}+\frac{1}{R_2}+\frac{1}{R_3}}$$
 
+## Laboratori virtual
+
+Pots fer servir aquest laboratori virtual per a construir circuits sèrie, paral·lel i mixtos.
+<br><br>
+<center>
+<div style="position: relative; width: 300px; height: 200px;"><a href="https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_en.html" style="text-decoration: none;"><img src="https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc-600.png" alt="Circuit Construction Kit: DC" style="border: none;" width="300" height="200"/><div style="position: absolute; width: 200px; height: 80px; left: 50px; top: 60px; background-color: #FFF; opacity: 0.6; filter: alpha(opacity = 60);"></div><table style="position: absolute; width: 200px; height: 80px; left: 50px; top: 60px;"><tr><td style="text-align: center; color: #000; font-size: 24px; font-family: Arial,sans-serif;">Feu clic</td></tr></table></a></div>
+</center>
+<br><br>
+
 ## Elements de control
 
 Per a controlar els circuit elèctrics s'utilizen elements de maniobra o control. Podem enumerar els següents:
@@ -209,7 +218,7 @@ Les resistències fixes tenen un valor constant, dintre d'uns marges de toleràn
 Els <a href="https://ca.wikipedia.org/wiki/Potenci%C3%B2metre">potenciòmetres</a> són resistències variables que prenen valors que van des de $0\,\Omega$ i un valor màxim que acostuma venir indicat en el component. Per a canviar el valor és necessari girar un eix o deplaçar un cursor.
 
 <figure>
-<img src="img/potenciometro_01.jpg" width="30%"><img src="img/potenciometro.png" width="30%">
+<img src="img/potenciometro_01.jpg" width="40%"><img src="img/potenciometro.png" width="40%">
 <figcaption>El potenciòmetre i el seu símbol.</figcaption>
 </figure>
 
@@ -225,7 +234,7 @@ Aquestes resistències canvien el seu valor quan canvia la temperatura. N'hi ha 
 Aquestes resistències també s'anomenen **termistors** i es fan servir en sistemes automàtics de regulació de temperatura.
 
 <figure>
-<img src="img/termistor_02.jpg" width="200px"><img src="img/NTC.png" width="200px">
+<img src="img/termistor_02.jpg" width="50%"><img src="img/NTC.png" width="40%">
 <figcaption>Termistors (resistències variables amb la temperatura). N'hi ha de dos tipus: NTC i PTC.</figcaption>
 </figure>
 
@@ -235,7 +244,7 @@ Aquestes resistències, també conegudes com LDR (*Light Dependent Resistors*) e
 Les principals aplicacions d'aquestos components pot ser: l'automatització dels sistemes d'enllumenat (al fer-se de nit s'encenen els fanals), control de circuits amb relés, en alarmes, etc. D'aquesta manera aquestes resistències es poden considerar com sensors, la seva instal·lació al circuit és molt sencilla i no hem de mirar la polaritat per a connactar-les.
 
 <figure>
-<img src="img/LDR.jpg" width="200px"><img src="img/LDR.png" width="200px">
+<img src="img/LDR.jpg" width="50%"><img src="img/LDR.png" width="40%">
 <figcaption>LDR (resistències variables amb la llum) i el seu símbol.</figcaption>
 </figure>
 
@@ -243,7 +252,7 @@ Les principals aplicacions d'aquestos components pot ser: l'automatització dels
 El capacitor, també anomenat condensador, és un component també bastant comú en els circuits electrònics. Un capacitor consisteix, bàsicament, en dues plaques metàl·liques separades per un material aïllant anomenat dielèctric. Aquest dielèctric acostuma ser d'aire, paper, ceràmica, mica, plàstics, etc. normalment es disposa en forma de làmina molt prima per aconseguir que les plaques, anomenades armadures, es trobin a molt curta distància.
 
 <figure>
-<img src="img/capacitores_01.gif" width="200px"><img src="img/capacitor.png" width="100px">
+<img src="img/capacitores_01.gif" width="60%"><img src="img/capacitor.png" width="40%">
 <figcaption>Capacitors. Símbol del capacitor i del capacitor electrolític. Aquest últim té polaritat.</figcaption>
 </figure>
 
@@ -260,7 +269,7 @@ $$C=\frac{q}{V}$$
 on $C$ és la capacitat en farads (F), $q$ és la càrrega en coulombs (C) i $V$ és el voltatge en volts (V).
 
 <figure>
-<img src="img/condensador001.jpg" width="400px">
+<img src="img/condensador001.jpg" width="80%">
 <figcaption>Les càrregues oposades s'atreuen i s'acumulen a les plaques del capacitor.</figcaption>
 </figure>
 
