@@ -5,7 +5,7 @@ Els servo motors són motors que s'utilitzen per a fer girs de menys d'una volta
 
 <img src="img/servo1.jpg" width="50%">
 
-Com ja sabeu, la Raspberry Pi no conté sortides analògiques, només digitals. Per fer funcionar el servo haurem de simular la sortida analògica fent servir la tècnica coneguda com PWM (pulse-width modulation) que ja hem provat abans quan vam controlar la [brillantor d'un LED](https://niobio.github.io/raspi/led/brillantor_led.html). En aquest cas començarem per provar amb un programa molt semblant al que vam fer servir pel LED, podem veure la connexió del motor a la figura de sota
+Com ja sabeu, la Raspberry Pi no conté sortides analògiques, només digitals. Per fer funcionar el servo haurem de simular la sortida analògica fent servir la tècnica coneguda com PWM (pulse-width modulation) que ja hem provat abans quan vam controlar la [brillantor d'un LED](https://www.github.com/niobio/raspi/led/brillantor_led.md). En aquest cas començarem per provar amb un programa molt semblant al que vam fer servir pel LED, podem veure la connexió del motor a la figura de sota
 
 <img src="img/servo_connect_0_bb.png" width="50%">
 
