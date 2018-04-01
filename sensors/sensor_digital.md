@@ -48,7 +48,7 @@ En l'exemple anterior havíem utilitzat uns resistors per a fixar el voltatge de
 
 Sense la resistència externa el nostre circuit quedarà com el de la figura següent:
 
-<img src="img/interrupts.png" width=70%>
+<img src="img/interrupts.png" width="70%">
 
 L'activació de les resistències internes l'hem de fer quan declarem les entrades. En el nostre cas la línia de codi que hem de modificar quedaria:
 
