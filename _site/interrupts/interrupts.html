@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ca-ES">
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="raspi : Raspberry Pi projects">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=c431fecaee24c43a8b501e520950271b211f606d">
+
+<!-- Begin Jekyll SEO tag v2.3.0 -->
+<title>Programar amb interrupcions | raspi</title>
+<meta property="og:title" content="Programar amb interrupcions" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Raspberry Pi projects" />
+<meta property="og:description" content="Raspberry Pi projects" />
+<link rel="canonical" href="http://localhost:4000/interrupts/interrupts.html" />
+<meta property="og:url" content="http://localhost:4000/interrupts/interrupts.html" />
+<meta property="og:site_name" content="raspi" />
+<script type="application/ld+json">
+{"name":null,"description":"Raspberry Pi projects","author":null,"@type":"WebPage","url":"http://localhost:4000/interrupts/interrupts.html","publisher":null,"image":null,"headline":"Programar amb interrupcions","dateModified":null,"datePublished":null,"sameAs":null,"mainEntityOfPage":null,"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true,
+    }
+  });
+</script>
+<!--
+<script type="text/javascript" async
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+-->
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+<!--      <a id="forkme_banner" href="http://github.com/niobio/raspi">View on GitHub</a>
+
+          <h1 id="project_title">raspi</h1>
+          <h2 id="project_tagline">Raspberry Pi projects</h2>
+-->
+          <h1 id="project_title">Projectes amb Raspberry Pi</h1>
+          <h6 id="project_tagline">José Luis Tourón</h6>
+
+
+
+          
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        
+<h1 id="programar-amb-interrupcions">Programar amb interrupcions</h1>
+
+<p>Hi ha varies maneres de llegir el valor de les entrades als pins GPIO per part del nostre programa. La primera i més senzilla de totes és la coneguda com a mètode de <strong>sondeig</strong> (polling). Aquest mètode consisteix en llegir, en un determinat instant, l’estat del pin. El mètode de sondeig es fa servir dintre de bucles i poden demanar molta càrrega al processador.</p>
+
+<p>Una altra manera de llegir les entrades és a través de les anomenades <strong>interrupcions</strong> (<em>interrupts</em> o <em>edge detection</em> en anglès). Les interrupcions consisteixen en detectar un canvi d’estat de HIGH a LOW (<em>falling edge</em>) o de LOW a HIGH (<em>rising edge</em>). Aquest mètode és més eficient que el de sondeig ja què no és tan intensiu per al processador.</p>
+
+<p>A la figura de sota tenim un polsador connectat al pin 12 de la Raspberry Pi. Si volem detectar si el polsador ha estat premut sense haver que estar constantment fent crides per a observar l’estat del pin (sondeig), el que podem fer es utilitzar la funció <code class="highlighter-rouge">add_event_detect</code> de la llibreria <code class="highlighter-rouge">RPi.GPIO</code>.</p>
+
+<p><img src="img/polsador_bb.png" width="70%" /></p>
+
+<p>Acompanyarem aquesta connexió amb el codi Python següent, que podem anomenar <code class="highlighter-rouge">interrupts.py</code>. Aquest codi el que fa és comptar els segons que van passant i mostra a la pantalla el temps en segons. Però, quan el polsador és premut mostra el missatge “polsador premut”:</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">RPi.GPIO</span> <span class="kn">as</span> <span class="nn">GPIO</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="n">GPIO</span><span class="o">.</span><span class="n">setmode</span><span class="p">(</span><span class="n">GPIO</span><span class="o">.</span><span class="n">BOARD</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">my_callback</span><span class="p">(</span><span class="n">channel</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"polsador premut"</span><span class="p">)</span>
+    
+<span class="n">GPIO</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">IN</span><span class="p">,</span> <span class="n">pull_up_down</span><span class="o">=</span><span class="n">GPIO</span><span class="o">.</span><span class="n">PUD_UP</span><span class="p">)</span>
+<span class="n">GPIO</span><span class="o">.</span><span class="n">add_event_detect</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">FALLLING</span><span class="p">,</span> <span class="n">calling</span><span class="o">=</span><span class="n">my_callback</span><span class="p">)</span>
+
+<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<p>Si executeu el codi amb privilegis de superusuari (<code class="highlighter-rouge">sudo</code>), alguna cosa semblant al que apareix a sota:
+$ sudo python interrupts.py
+1
+2
+3
+polsador premut
+4
+polsador premut
+5
+polsador premut
+polsador premut
+6
+Hem vist que només quan es detecta un cambi en l’estat del polsador s’executa la funció <code class="highlighter-rouge">my_callback</code> que porta només un argument (<code class="highlighter-rouge">channel</code>). Aquest argument especifica la entrada que va disparar la interrupció, permetent utilitzar la mateixa funció per a altres interrupcions.</p>
+
+<p>La funció que s’executa quan es detecta la interrupció és:</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">my_callback</span><span class="p">(</span><span class="n">channel</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"polsador premut"</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<p>La línia de codi que fa la crida a la funció és:</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">GPIO</span><span class="o">.</span><span class="n">add_event_detect</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">FALLLING</span><span class="p">,</span> <span class="n">calling</span><span class="o">=</span><span class="n">my_callback</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<p>El primer paràmetre especifica el pin (12). El segon paràmetre pot ser <code class="highlighter-rouge">GPIO.FALLING</code>, <code class="highlighter-rouge">GPIO.RISING</code> o <code class="highlighter-rouge">GPIO.BOTH</code>. Si està en <code class="highlighter-rouge">FALLING</code>, la funció només serà cridada si el pin passa de <code class="highlighter-rouge">HIGH</code> a <code class="highlighter-rouge">LOW</code>. Aquest és el cas de l’exemple anterior. L’últim paràmetre correspon a la funció que ha de ser cridada quan es detecta aquesta interrupció.</p>
+
+<p>D’aquesta manera s’obté un us més eficiant del processador.</p>
+
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        
+        <p class="copyright">raspi maintained by <a href="http://github.com/niobio">niobio</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+  </body>
+</html>

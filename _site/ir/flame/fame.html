@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ca-ES">
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="raspi : Raspberry Pi projects">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=c431fecaee24c43a8b501e520950271b211f606d">
+
+<!-- Begin Jekyll SEO tag v2.3.0 -->
+<title>Detecció de foc amb infraroigs | raspi</title>
+<meta property="og:title" content="Detecció de foc amb infraroigs" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Raspberry Pi projects" />
+<meta property="og:description" content="Raspberry Pi projects" />
+<link rel="canonical" href="http://localhost:4000/ir/flame/fame.html" />
+<meta property="og:url" content="http://localhost:4000/ir/flame/fame.html" />
+<meta property="og:site_name" content="raspi" />
+<script type="application/ld+json">
+{"name":null,"description":"Raspberry Pi projects","author":null,"@type":"WebPage","url":"http://localhost:4000/ir/flame/fame.html","publisher":null,"image":null,"headline":"Detecció de foc amb infraroigs","dateModified":null,"datePublished":null,"sameAs":null,"mainEntityOfPage":null,"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true,
+    }
+  });
+</script>
+<!--
+<script type="text/javascript" async
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+-->
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+<!--      <a id="forkme_banner" href="http://github.com/niobio/raspi">View on GitHub</a>
+
+          <h1 id="project_title">raspi</h1>
+          <h2 id="project_tagline">Raspberry Pi projects</h2>
+-->
+          <h1 id="project_title">Projectes amb Raspberry Pi</h1>
+          <h6 id="project_tagline">José Luis Tourón</h6>
+
+
+
+          
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        
+<h1 id="detecció-de-foc-amb-infraroigs">Detecció de foc amb infraroigs</h1>
+
+<p>El mòdul KY-026 és un sensor d’infraroigs que es pot fer servir per a fer detecció de foc, ja que detecta flames de longituds d’ona que van de 760 nm a 1100 nm.</p>
+
+<p><img src="img/ir_flame.jpeg" style="center" width="50%" /></p>
+
+<p><img src="img/ir_flame_pins.png" style="center" width="50%" /></p>
+
+<p>Girant el cargol es pot ajustar la sensibilitat del sensor.</p>
+
+<p><img src="img/sens-poti.jpg" style="center" width="30%" /></p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">RPi.GPIO</span> <span class="kn">as</span> <span class="nn">GPIO</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="n">FlamePin</span> <span class="o">=</span> <span class="mi">11</span>
+
+<span class="k">def</span> <span class="nf">init</span><span class="p">():</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">setmode</span><span class="p">(</span><span class="n">GPIO</span><span class="o">.</span><span class="n">BOARD</span><span class="p">)</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">FlamePin</span><span class="p">,</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">IN</span><span class="p">,</span> <span class="n">pull_up_down</span><span class="o">=</span><span class="n">GPIO</span><span class="o">.</span><span class="n">PUD_UP</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">myISR</span><span class="p">(</span><span class="n">ev</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">print</span> <span class="s">"Flame is detected!"</span>
+
+<span class="k">def</span> <span class="nf">loop</span><span class="p">():</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">add_event_detect</span><span class="p">(</span><span class="n">FlamePin</span><span class="p">,</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">FALLING</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">myISR</span><span class="p">)</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">init</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">loop</span><span class="p">()</span>
+    <span class="k">except</span> <span class="nb">KeyboardInterrupt</span><span class="p">:</span> 
+        <span class="k">print</span> <span class="s">'The end!'</span>
+</code></pre>
+</div>
+
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        
+        <p class="copyright">raspi maintained by <a href="http://github.com/niobio">niobio</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+  </body>
+</html>

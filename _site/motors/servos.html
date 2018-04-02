@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ca-ES">
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="raspi : Raspberry Pi projects">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=c431fecaee24c43a8b501e520950271b211f606d">
+
+<!-- Begin Jekyll SEO tag v2.3.0 -->
+<title>Controlar un servo motor | raspi</title>
+<meta property="og:title" content="Controlar un servo motor" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Raspberry Pi projects" />
+<meta property="og:description" content="Raspberry Pi projects" />
+<link rel="canonical" href="http://localhost:4000/motors/servos.html" />
+<meta property="og:url" content="http://localhost:4000/motors/servos.html" />
+<meta property="og:site_name" content="raspi" />
+<script type="application/ld+json">
+{"name":null,"description":"Raspberry Pi projects","author":null,"@type":"WebPage","url":"http://localhost:4000/motors/servos.html","publisher":null,"image":null,"headline":"Controlar un servo motor","dateModified":null,"datePublished":null,"sameAs":null,"mainEntityOfPage":null,"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true,
+    }
+  });
+</script>
+<!--
+<script type="text/javascript" async
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+-->
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+<!--      <a id="forkme_banner" href="http://github.com/niobio/raspi">View on GitHub</a>
+
+          <h1 id="project_title">raspi</h1>
+          <h2 id="project_tagline">Raspberry Pi projects</h2>
+-->
+          <h1 id="project_title">Projectes amb Raspberry Pi</h1>
+          <h6 id="project_tagline">José Luis Tourón</h6>
+
+
+
+          
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        
+<h1 id="controlar-un-servo-motor">Controlar un servo motor</h1>
+
+<p>Els servo motors són motors que s’utilitzen per a fer girs de menys d’una volta, no són motors de girs continus. A la figura inferior podem veure un motor servo, podem veure que té 3 cables. El cable vermell s’ha de connectar a l’alimentació (5 V), el marró és la conexió a terra (Gnd) i el taronja s’ha de connectar al pin que controlarà quant ha de girar el motor.</p>
+
+<p><img src="img/servo1.jpg" width="50%" /></p>
+
+<p>Com ja sabeu, la Raspberry Pi no conté sortides analògiques, només digitals. Per fer funcionar el servo haurem de simular la sortida analògica fent servir la tècnica coneguda com PWM (pulse-width modulation) que ja hem provat abans quan vam controlar la <a href="https://niobio.github.io/raspi/led/brillantor_led.html">brillantor d’un LED</a>. En aquest cas començarem per provar amb un programa molt semblant al que vam fer servir pel LED, podem veure la connexió del motor a la figura de sota</p>
+
+<p><img src="img/servo_connect_0_bb.png" width="50%" /></p>
+
+<p>El codi corresponent es pot veure a continuació.</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">RPi.GPIO</span> <span class="kn">as</span> <span class="nn">GPIO</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="n">motor_pin</span> <span class="o">=</span> <span class="mi">12</span>
+
+<span class="n">GPIO</span><span class="o">.</span><span class="n">setmode</span><span class="p">(</span><span class="n">GPIO</span><span class="o">.</span><span class="n">BOARD</span><span class="p">)</span>
+<span class="n">GPIO</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">motor_pin</span><span class="p">,</span><span class="n">GPIO</span><span class="o">.</span><span class="n">OUT</span><span class="p">)</span>
+
+<span class="n">pwm</span> <span class="o">=</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">PWM</span><span class="p">(</span><span class="n">motor_pin</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">pwm</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">duty</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s">"Entrar gir (0 a 20): "</span><span class="p">))</span>
+        <span class="n">pwm</span><span class="o">.</span><span class="n">ChangeDutyCycle</span><span class="p">(</span><span class="n">duty</span><span class="p">)</span>
+        
+<span class="k">finally</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Cleaning up"</span><span class="p">)</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
+</code></pre>
+</div>
+
+<p>Els motors servo s’utilitzen en vehicles de control remot o robots. Molts servos no son continus, es a dir, no poden rotar tota una volta sinó que ho fan fins un angle màxim de 180 graus. La posició del servo està fixat per la longitud del pols. El motor servo espera rebre un pols al menys cada 20 mil·lisegons. Si el pols està a <code class="highlighter-rouge">HIGH</code> per 1 ms el motor es posarà a un angle de zero graus, si és de 1,5 ms l’angle serà de 90 graus (posició central) i, si és de 2 ms, es posarà a 180 graus (veure figura inferior).</p>
+
+<p><img src="img/servo3.png" width="80%" /></p>
+
+<p>En el codi es pot veure que la funció GPIO.PWM crea en el pin <code class="highlighter-rouge">motor_pin</code>, corresponent al pin 12, que fixa la freqüencia del pols en 100 Hz, es a dir, que emet un pols cada 10 ms. Per a que el motor giri 180 graus ha de tenir un pols d’amplada 2 ms, això vol dir un 20% del període. Per això fem que el valor de l’angle es pugui variar posant valors entre 0 i 20 que correspondrà a valors entre 0 i 180 graus.</p>
+
+<p>També podem connectar el servo a una font d’alimentació externa tal com podem veure a la figura següent.</p>
+
+<p><img src="img/servo_connect_bb.png" width="80%" /></p>
+
+<p>També podem utilitzar una interfície gràfica per a controlar el gir del motor. Python porta una biblioteca gràfica, Tkinter, que permet crear finestres o objectes gràfics. Utilitzarem aquesta biblioteca per a crear un control lliscant per a variar l’angle de gir del motor. A sota podem veure l’aspecte del control:</p>
+
+<p><img src="img/slider.png" width="30%" /></p>
+
+<p>A diferència del codi anterior, on el gir el controlàvem amb valor des de 0 fins a 20, en aquest codi el valor a variar és directament l’angle, prenent valors entre 0 i 180 graus. Dintre del codi es fa la transformació per a que el valor de l’angle es converteixi en els valor del cicle de treball (de 0 a 20 aprox). Podem fer proves variant els valors lleugerament per a que els angles s’ajustin als valors desitjats.</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">RPi.GPIO</span> <span class="kn">as</span> <span class="nn">GPIO</span>
+
+<span class="n">GPIO</span><span class="o">.</span><span class="n">setmode</span><span class="p">(</span><span class="n">GPIO</span><span class="o">.</span><span class="n">BCM</span><span class="p">)</span>
+<span class="n">GPIO</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">OUT</span><span class="p">)</span>
+<span class="n">pwm</span> <span class="o">=</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">PWM</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">pwm</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">App</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">master</span><span class="p">):</span>
+        <span class="n">frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="n">master</span><span class="p">)</span>
+        <span class="n">frame</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">Scale</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">from_</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="n">HORIZONTAL</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">)</span>
+        <span class="n">scale</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
+        <span class="n">duty</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span> <span class="o">/</span> <span class="mf">10.0</span> <span class="o">+</span> <span class="mf">2.5</span>
+        <span class="n">pwm</span><span class="o">.</span><span class="n">ChangeDutyCycle</span><span class="p">(</span><span class="n">duty</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">root</span> <span class="o">=</span> <span class="n">Tk</span><span class="p">()</span>
+    <span class="n">root</span><span class="o">.</span><span class="n">wm_title</span><span class="p">(</span><span class="s">'Servo Control'</span><span class="p">)</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">App</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+    <span class="n">root</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s">"200x50+0+0"</span><span class="p">)</span>
+    <span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
+</code></pre>
+</div>
+
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        
+        <p class="copyright">raspi maintained by <a href="http://github.com/niobio">niobio</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+  </body>
+</html>

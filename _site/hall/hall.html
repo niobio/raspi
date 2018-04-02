@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ca-ES">
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="raspi : Raspberry Pi projects">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=c431fecaee24c43a8b501e520950271b211f606d">
+
+<!-- Begin Jekyll SEO tag v2.3.0 -->
+<title>Sensor d’efecte Hall | raspi</title>
+<meta property="og:title" content="Sensor d’efecte Hall" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Raspberry Pi projects" />
+<meta property="og:description" content="Raspberry Pi projects" />
+<link rel="canonical" href="http://localhost:4000/hall/hall.html" />
+<meta property="og:url" content="http://localhost:4000/hall/hall.html" />
+<meta property="og:site_name" content="raspi" />
+<script type="application/ld+json">
+{"name":null,"description":"Raspberry Pi projects","author":null,"@type":"WebPage","url":"http://localhost:4000/hall/hall.html","publisher":null,"image":null,"headline":"Sensor d’efecte Hall","dateModified":null,"datePublished":null,"sameAs":null,"mainEntityOfPage":null,"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true,
+    }
+  });
+</script>
+<!--
+<script type="text/javascript" async
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+-->
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+<!--      <a id="forkme_banner" href="http://github.com/niobio/raspi">View on GitHub</a>
+
+          <h1 id="project_title">raspi</h1>
+          <h2 id="project_tagline">Raspberry Pi projects</h2>
+-->
+          <h1 id="project_title">Projectes amb Raspberry Pi</h1>
+          <h6 id="project_tagline">José Luis Tourón</h6>
+
+
+
+          
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        
+<h1 id="sensor-defecte-hall">Sensor d’efecte Hall</h1>
+
+<p>Els sensors d’efecte Hall poden detectar la presència de camps magnètics, per tant es poden fer servir juntament amb un imant per a detectar moviments o rotacions.</p>
+
+<p>En la figura de sota es pot veure el mòdul d’efecte Hall que farem servir. Es pot apreciar a què correspon cada pota del sensor. Habitualment la pota corresponent a la senyal té una S gravada, la pota corresponent a GND té un signe - i, a vegades la pota d’alimentació (Vcc) té un signe +.</p>
+
+<p><img src="img/KY035.JPG" width="50%" /></p>
+
+<p>En aquest cas utilitzarem un imant per a provar el sensor. Una vista de com fer el connexionat es pot veure a la figura inferior.</p>
+
+<p><img src="img/hall_connect_bb.png" width="80%" /></p>
+
+<p>En el circuit tenim el sensor Hall connectat al pin 16 i un LED al pin 12 de la Raspberry. Provarem el sensor Hall fent un programa que, quan detecti un camp magnètic (quan apropem un imant), encengui el LED.</p>
+
+<p>A sota podem veure el codi Python corresponent.</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">RPi.GPIO</span> <span class="kn">as</span> <span class="nn">GPIO</span>
+
+<span class="c">#Hall sensor is connected to pin 16 (BOARD-Layout!)</span>
+<span class="n">HALL</span> <span class="o">=</span> <span class="mi">16</span> 
+
+<span class="c">#LED is connected to pin 12 (BOARD-Layout!)</span>
+<span class="n">LED</span>  <span class="o">=</span> <span class="mi">12</span>
+
+<span class="c">#Set pin-layout to BOARD</span>
+<span class="n">GPIO</span><span class="o">.</span><span class="n">setmode</span><span class="p">(</span><span class="n">GPIO</span><span class="o">.</span><span class="n">BOARD</span><span class="p">)</span>
+
+<span class="c">#Avoid error messages if GPIO was not shut down correctly before</span>
+<span class="n">GPIO</span><span class="o">.</span><span class="n">setwarnings</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span> 
+
+<span class="c">#Set HALL-pin to input, use internal pull-up-resistor</span>
+<span class="n">GPIO</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">HALL</span><span class="p">,</span><span class="n">GPIO</span><span class="o">.</span><span class="n">IN</span><span class="p">,</span> <span class="n">pull_up_down</span><span class="o">=</span><span class="n">GPIO</span><span class="o">.</span><span class="n">PUD_UP</span><span class="p">)</span> 
+
+<span class="c">#Set LED-pin to output. A resistor should be used here!</span>
+<span class="n">GPIO</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">LED</span><span class="p">,</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">OUT</span><span class="p">)</span>
+
+<span class="c">#Turn LED off</span>
+<span class="n">GPIO</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">LED</span><span class="p">,</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">LOW</span><span class="p">)</span>
+
+<span class="c">#This function will be called if a change is detected</span>
+<span class="k">def</span> <span class="nf">change_detected</span><span class="p">(</span><span class="n">channel</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">GPIO</span><span class="o">.</span><span class="nb">input</span><span class="p">(</span><span class="n">HALL</span><span class="p">)</span> <span class="o">==</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">LOW</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Magnetic material detected: LED on'</span><span class="p">)</span>
+        <span class="n">GPIO</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">LED</span><span class="p">,</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">HIGH</span><span class="p">)</span> <span class="c">#LED on</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'No magnetic material: LED off'</span><span class="p">)</span>
+        <span class="n">GPIO</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">LED</span><span class="p">,</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">LOW</span><span class="p">)</span> <span class="c"># LED off</span>
+
+<span class="c"># Register event-listener on falling and raising</span>
+<span class="c"># edge on HALL-sensor input. Call "change_detected" as</span>
+<span class="c"># callback</span>
+<span class="n">GPIO</span><span class="o">.</span><span class="n">add_event_detect</span><span class="p">(</span><span class="n">HALL</span><span class="p">,</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">BOTH</span><span class="p">,</span> <span class="n">change_detected</span><span class="p">,</span> <span class="n">bouncetime</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+
+<span class="c"># The main-loop does nothing. All is done by the event-listener</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+<span class="c"># Quit on Ctrl-c</span>
+<span class="k">except</span> <span class="nb">KeyboardInterrupt</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Ctrl-C - quit"</span><span class="p">)</span>
+
+<span class="c"># Cleanup GPIO</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span> 
+</code></pre>
+</div>
+
+<h2 id="discusió">Discusió:</h2>
+<p>Podem apreciar que el bucle principal no fa res, tota la feina la fa la línia de codi que es dedica a detectar esdeveniments. En aquest cas, si canvia l’estat del pin <code class="highlighter-rouge">HALL</code> es llança la funció <code class="highlighter-rouge">change_detected</code> que, en funció del canvi detectat fa que el LED s’encengui o s’apagui. El paràmetre <code class="highlighter-rouge">bouncetime</code> correspon a un número donat en mil·lisegons que és el temps que s’esperarà abans de fer una nova mesura. Això es fa per a evitar els canvis ràpids del valor del voltatge degut a transitoris interns del dispositiu de mesura coneguts com a “rebots”. Si observem un comportament una mica erratic del sensor podem probar d’augmentar aquest valor.</p>
+
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        
+        <p class="copyright">raspi maintained by <a href="http://github.com/niobio">niobio</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+  </body>
+</html>

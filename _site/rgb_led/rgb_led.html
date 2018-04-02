@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ca-ES">
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="raspi : Raspberry Pi projects">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=c431fecaee24c43a8b501e520950271b211f606d">
+
+<!-- Begin Jekyll SEO tag v2.3.0 -->
+<title>Controlar un LED RGB | raspi</title>
+<meta property="og:title" content="Controlar un LED RGB" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Raspberry Pi projects" />
+<meta property="og:description" content="Raspberry Pi projects" />
+<link rel="canonical" href="http://localhost:4000/rgb_led/rgb_led.html" />
+<meta property="og:url" content="http://localhost:4000/rgb_led/rgb_led.html" />
+<meta property="og:site_name" content="raspi" />
+<script type="application/ld+json">
+{"name":null,"description":"Raspberry Pi projects","author":null,"@type":"WebPage","url":"http://localhost:4000/rgb_led/rgb_led.html","publisher":null,"image":null,"headline":"Controlar un LED RGB","dateModified":null,"datePublished":null,"sameAs":null,"mainEntityOfPage":null,"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true,
+    }
+  });
+</script>
+<!--
+<script type="text/javascript" async
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+-->
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+<!--      <a id="forkme_banner" href="http://github.com/niobio/raspi">View on GitHub</a>
+
+          <h1 id="project_title">raspi</h1>
+          <h2 id="project_tagline">Raspberry Pi projects</h2>
+-->
+          <h1 id="project_title">Projectes amb Raspberry Pi</h1>
+          <h6 id="project_tagline">José Luis Tourón</h6>
+
+
+
+          
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        
+<h1 id="controlar-un-led-rgb">Controlar un LED RGB</h1>
+
+<p>Els LED RGB són LED amb els quals podem controlar el color. El LED té 4 potes anomenades R (red), G (green), B (blue) i GND (terra). Podem controlar el color del led fent combinacions entre els tres colors. Si combinem vermell i blau ens sortirà un magenta, si barregem verd i blau ens sortirà un cian i barrenjant vermell i verd ens sortirà groc.</p>
+
+<p>A la figura de sota podem veure un led RGB:</p>
+
+<p><img src="img/rgb.jpeg" width="40%" /></p>
+
+<p>A la figura següent s’observa un LED RGB SMD (<em>surface mount device</em>):</p>
+
+<p><img src="img/rgb_smd.jpeg" width="40%" /></p>
+
+<p>Per a controlar la manera de barrejar els colors podem fer servir la tècnica PWM (veure controlar la <a href="https://niobio.github.io/raspi/led/brillantor_led.html">brillantor d’un LED</a>).</p>
+
+<p>Amb el codi següent podem cambiar el color i la intensitat de la llum d’un LED introduint la component de cada color amb un valor entre 0 i 100.</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">RPi.GPIO</span> <span class="kn">as</span> <span class="nn">GPIO</span>
+
+<span class="n">pins</span> <span class="o">=</span> <span class="p">{</span><span class="s">'pin_R'</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span> <span class="s">'pin_G'</span><span class="p">:</span><span class="mi">11</span><span class="p">,</span> <span class="s">'pin_B'</span><span class="p">:</span><span class="mi">12</span><span class="p">}</span>  <span class="c"># pins is a dict</span>
+
+<span class="n">GPIO</span><span class="o">.</span><span class="n">setmode</span><span class="p">(</span><span class="n">GPIO</span><span class="o">.</span><span class="n">BOARD</span><span class="p">)</span>       <span class="c"># Numbers GPIOs by physical location</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pins</span><span class="p">:</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">pins</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">OUT</span><span class="p">)</span>   <span class="c"># Set pins' mode is output</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">pins</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">HIGH</span><span class="p">)</span> <span class="c"># Set pins to high(+3.3V) to off led</span>
+
+<span class="n">p_R</span> <span class="o">=</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">PWM</span><span class="p">(</span><span class="n">pins</span><span class="p">[</span><span class="s">'pin_R'</span><span class="p">],</span> <span class="mi">500</span><span class="p">)</span>  <span class="c"># set Frequece to 500Hz</span>
+<span class="n">p_G</span> <span class="o">=</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">PWM</span><span class="p">(</span><span class="n">pins</span><span class="p">[</span><span class="s">'pin_G'</span><span class="p">],</span> <span class="mi">500</span><span class="p">)</span>
+<span class="n">p_B</span> <span class="o">=</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">PWM</span><span class="p">(</span><span class="n">pins</span><span class="p">[</span><span class="s">'pin_B'</span><span class="p">],</span> <span class="mi">500</span><span class="p">)</span>
+
+<span class="n">p_R</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>      <span class="c"># Initial duty Cycle = 0(leds off)</span>
+<span class="n">p_G</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">p_B</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">duty_R</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s">"Enter red component (0 to 100): "</span><span class="p">))</span>
+        <span class="n">duty_G</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s">"Enter green component (0 to 100): "</span><span class="p">))</span>
+        <span class="n">duty_B</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s">"Enter blue component (0 to 100): "</span><span class="p">))</span>
+        <span class="n">p_R</span><span class="o">.</span><span class="n">ChangeDutyCycle</span><span class="p">(</span><span class="n">duty_R</span><span class="p">)</span>
+        <span class="n">p_G</span><span class="o">.</span><span class="n">ChangeDutyCycle</span><span class="p">(</span><span class="n">duty_G</span><span class="p">)</span>
+        <span class="n">p_B</span><span class="o">.</span><span class="n">ChangeDutyCycle</span><span class="p">(</span><span class="n">duty_B</span><span class="p">)</span>
+
+<span class="k">except</span> <span class="nb">KeyboardInterrupt</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Ctrl + C, quit"</span><span class="p">)</span>
+    <span class="n">p_R</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+    <span class="n">p_G</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+    <span class="n">p_B</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
+</code></pre>
+</div>
+
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        
+        <p class="copyright">raspi maintained by <a href="http://github.com/niobio">niobio</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+  </body>
+</html>

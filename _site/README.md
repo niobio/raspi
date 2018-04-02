@@ -2,10 +2,24 @@
 
 ### [Introducció a la Raspberry Pi](raspberry_pi.md){:target="_blank"}
 
-### [Controlar un led](led/led.md){:target="_blank"}
+### [Encendre un LED](led/led.md){:target="_blank"}
+
+### [Controlar la brillantor d'un LED](led/brillantor_led.md){:target="_blank"}
 
 ### [Sensors digitals](sensors/sensor_digital.md){:target="_blank"}
 
 ### [Sensors analògics](sensors/sensor_analog.md){:target="_blank"}
+
+### [Programar amb Interrupcions](interrupts/interrupts.md){:target="_blank"}
+
+### [Servo motors](motors/servos.md){:target="_blank"}
+
+### [Detecció de moviments amb infraroigs](ir/pir/pir.md){:target="_blank"}
+
+### [Detecció de foc amb infraroigs](ir/flame/flame.md){:target="_blank"}
+
+### [Sensors d'efecte Hall](hall/hall.md){:target="_blank"}
+
+### [Sensors de vibracions](shock/shock.md){:target="_blank"}
 
 ### [Sistema de reg automàtic](reg/reg.md){:target="_blank"}

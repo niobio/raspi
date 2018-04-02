@@ -14,4 +14,12 @@
 
 ### [Servo motors](motors/servos.md){:target="_blank"}
 
+### [Detecció de moviments amb infraroigs](ir/pir/pir.md){:target="_blank"}
+
+### [Detecció de foc amb infraroigs](ir/flame/flame.md){:target="_blank"}
+
+### [Sensors d'efecte Hall](hall/hall.md){:target="_blank"}
+
+### [Sensors de vibracions](shock/shock.md){:target="_blank"}
+
 ### [Sistema de reg automàtic](reg/reg.md){:target="_blank"}

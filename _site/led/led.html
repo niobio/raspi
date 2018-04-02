@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width,maximum-scale=2">
     <meta name="description" content="raspi : Raspberry Pi projects">
 
-    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=98f725ed2180441d4780861a252cf3feb1605e73">
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=c431fecaee24c43a8b501e520950271b211f606d">
 
 <!-- Begin Jekyll SEO tag v2.3.0 -->
 <title>Encendre un led amb Raspberry Pi | raspi</title>
@@ -197,6 +197,10 @@ Necessitarem el següent material:</p>
 <span class="c">#End</span>
 </code></pre>
 </div>
+
+<p>Hi ha una manera de deixar els pins de la Raspberry Pi en un estat segur. Consisteix en utilitzar la funció <code class="highlighter-rouge">GPIO.cleanup()</code> un cop el programa ha finalitzat. Això el que fa es esborrar totes les configuracions dels pins per evitar que quedin configurats segons el programa i després, accidentalment, els connectem d’una altra manera i es produeixi un curtcircuit. Per exemple, si tenim un pin congigurat com a sortida i al finalitzar el programa queda en un estat <code class="highlighter-rouge">HIGH</code>, si després el conectem a <code class="highlighter-rouge">GND</code> estarem produint un curtcircuit i possiblement cremant la placa.</p>
+
+<p>En el programa aquest problema el podem evitar si utilitzem la construcció <code class="highlighter-rouge">try: finally:</code>, de manera que el programa executa el que hi ha a la part <code class="highlighter-rouge">try:</code> i quan es produeix una finalització del programa perquè s’ha produit un error o perquè l’usuari l’ha terminat polsant <code class="highlighter-rouge">Ctrl + C</code>, aleshores s’executa la part que hi ha a <code class="highlighter-rouge">finally:</code>. D’aquesta manera la Raspberry queda restablerta i no hi ha perill.</p>
 
       </section>
     </div>
