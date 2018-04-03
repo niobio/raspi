@@ -14,6 +14,8 @@
 
 ### [Servo motors](motors/servos.md){:target="_blank"}
 
+### [Controlar un LED RGB](rgb_led/rgb_led.md){:target="_blank"}
+
 ### [Detecció de moviments amb infraroigs](ir/pir/pir.md){:target="_blank"}
 
 ### [Detecció de foc amb infraroigs](ir/flame/flame.md){:target="_blank"}
