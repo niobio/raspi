@@ -20,8 +20,12 @@
 
 ### [Detecció de foc amb infraroigs](ir/flame/flame.md){:target="_blank"}
 
+### [Detectar obstacles amb raigs infraroigs](ir/ir_obstacle/infraroig.md){:target="_blank"}
+
 ### [Sensors d'efecte Hall](hall/hall.md){:target="_blank"}
 
 ### [Sensors de vibracions](shock/shock.md){:target="_blank"}
 
 ### [Sistema de reg automàtic](reg/reg.md){:target="_blank"}
+
+### [Controlar la càmera amb Raspberry Pi](camera/camera.md){:target="_blank"}

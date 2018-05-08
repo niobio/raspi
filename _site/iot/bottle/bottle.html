@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ca-ES">
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="raspi : Raspberry Pi projects">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=93a6d8f074a8faeb5c5aa486e7681e3384cb05f2">
+
+<!-- Begin Jekyll SEO tag v2.3.0 -->
+<title>Servidor web senzill amb Python | raspi</title>
+<meta property="og:title" content="Servidor web senzill amb Python" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Raspberry Pi projects" />
+<meta property="og:description" content="Raspberry Pi projects" />
+<link rel="canonical" href="http://localhost:4000/iot/bottle/bottle.html" />
+<meta property="og:url" content="http://localhost:4000/iot/bottle/bottle.html" />
+<meta property="og:site_name" content="raspi" />
+<script type="application/ld+json">
+{"name":null,"description":"Raspberry Pi projects","author":null,"@type":"WebPage","url":"http://localhost:4000/iot/bottle/bottle.html","publisher":null,"image":null,"headline":"Servidor web senzill amb Python","dateModified":null,"datePublished":null,"sameAs":null,"mainEntityOfPage":null,"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true,
+    }
+  });
+</script>
+<!--
+<script type="text/javascript" async
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+-->
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+<!--      <a id="forkme_banner" href="http://github.com/niobio/raspi">View on GitHub</a>
+
+          <h1 id="project_title">raspi</h1>
+          <h2 id="project_tagline">Raspberry Pi projects</h2>
+-->
+          <h1 id="project_title">Projectes amb Raspberry Pi</h1>
+          <h6 id="project_tagline">José Luis Tourón</h6>
+
+
+
+          
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        
+<h1 id="servidor-web-senzill-amb-python">Servidor web senzill amb Python</h1>
+
+<p>Una manera senzilla de publicar a internet l’estat de sensors i, fins i tot, controlar sensors i actuadors de manera remota és mitjançant un servidor web al poder connectar. Veurem ara com fer funcionar la nostra Raspberry Pi com un servidor web senzill per fer coses com aquestes. No necessitem instal·lar un servidor potent (tampoc en volem) per fer coses senzilles. Per això utilitzarem la biblioteca <code class="highlighter-rouge">bottle</code> que ens permetrà tenir un servidor web senzill a la nostra placa.</p>
+
+<p>Per a instal·lar <code class="highlighter-rouge">bottle</code> a la Raspberry utilitzarem l’ordre:</p>
+
+<p><code class="highlighter-rouge">sudo apt install python-bottle</code></p>
+
+<p>al terminal d’ordres. Per a que pugui descarregar el paquet hem de tenir connexió a internet.</p>
+
+<p>Un cop instal·lada la biblioteca podem provar-la fent córrer el següent script que el que fa es publicar a la web la data i hora actual:</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">bottle</span> <span class="kn">import</span> <span class="n">route</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">template</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="nd">@route</span><span class="p">(</span><span class="s">'/'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'time'</span><span class="p">):</span>
+    <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="s">"{:</span><span class="si">%</span><span class="s">Y-</span><span class="si">%</span><span class="s">m-</span><span class="si">%</span><span class="s">d </span><span class="si">%</span><span class="s">H:</span><span class="si">%</span><span class="s">M:</span><span class="si">%</span><span class="s">S}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">template</span><span class="p">(</span><span class="s">'&lt;b&gt;Pi thinks the date/time is: &lt;/b&gt;'</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="n">time</span><span class="p">)</span>
+
+<span class="n">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">'0.0.0.0'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">8080</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<p>Després d’importar les biblioteques, l’ordre <code class="highlighter-rouge">@route</code> enllaça l’adreça d’ubicació <code class="highlighter-rouge">/</code> amb la funció que es troba a continuació. La funció el que fa és crear una cadena amb la data i hora actuals en format HTML i la retorna al servidor per a ser visualitzada. En aquest cas utilitza una plantilla (<code class="highlighter-rouge">template</code>) en el qual els valors són substituits.</p>
+
+<p>La línia final arrenca els procés de servir la pàgina al servidor. Si podem coma valor de <code class="highlighter-rouge">host</code> l’adreça <code class="highlighter-rouge">'0.0.0.0'</code> aquesta serà reemplaçada per l’adreça web de la Raspberry Pi. El port 8080 és el port on es podrà anar a buscar la pàgina i, de ser necessari aquest número es pot canviar.</p>
+
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        
+        <p class="copyright">raspi maintained by <a href="http://github.com/niobio">niobio</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+  </body>
+</html>

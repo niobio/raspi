@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ca-ES">
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="raspi : Raspberry Pi projects">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=93a6d8f074a8faeb5c5aa486e7681e3384cb05f2">
+
+<!-- Begin Jekyll SEO tag v2.3.0 -->
+<title>Detectar obstacles amb sensors infraroigs | raspi</title>
+<meta property="og:title" content="Detectar obstacles amb sensors infraroigs" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Raspberry Pi projects" />
+<meta property="og:description" content="Raspberry Pi projects" />
+<link rel="canonical" href="http://localhost:4000/ir/ir_obstacle/infraroig.html" />
+<meta property="og:url" content="http://localhost:4000/ir/ir_obstacle/infraroig.html" />
+<meta property="og:site_name" content="raspi" />
+<script type="application/ld+json">
+{"name":null,"description":"Raspberry Pi projects","author":null,"@type":"WebPage","url":"http://localhost:4000/ir/ir_obstacle/infraroig.html","publisher":null,"image":null,"headline":"Detectar obstacles amb sensors infraroigs","dateModified":null,"datePublished":null,"sameAs":null,"mainEntityOfPage":null,"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true,
+    }
+  });
+</script>
+<!--
+<script type="text/javascript" async
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+-->
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+<!--      <a id="forkme_banner" href="http://github.com/niobio/raspi">View on GitHub</a>
+
+          <h1 id="project_title">raspi</h1>
+          <h2 id="project_tagline">Raspberry Pi projects</h2>
+-->
+          <h1 id="project_title">Projectes amb Raspberry Pi</h1>
+          <h6 id="project_tagline">José Luis Tourón</h6>
+
+
+
+          
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        
+<h1 id="detectar-obstacles-amb-sensors-infraroigs">Detectar obstacles amb sensors infraroigs</h1>
+
+<p>El mòdul KY-032 que es veu a sota ha estat dissenyat per detectar obstacles. Està compost per un emissor de raigs infraroigs i un receptor que rep el rebot dels raigs sobre un obstacle que es trobi davant d’ell. Si el sensor no rep cap senyal vol dir que no hi ha obstacle i els raigs emessos es perden però, quan rep senyal vol dir que hi ha un obstacle davant d’ell. La distància de detecció es pot ajustar amb els potenciómetres que hi ha a la placa del sensor.</p>
+
+<p><img src="img/ky032.jpg" width="50%" /></p>
+
+<p>Aquest sensor porta 4 pins, un per a Vcc que es pot alimentar amb 3,3 V o 5 V, el de terra (GND) i el anomenat com OUT que correspon a la sortida cap a la Raspberry Pi i que dona la lectura. Hi a un altre pin amb el rètol EN que vol dir “Enable” i que es pot fer servir per activar o desactivar el sensor. El sensor queda sempre activat si s’utilitza el pont que curtcircuita els pins que hi ha sobre la placa del sensor que es veu a la figura en verd.</p>
+
+<p>El mòdul KY-033 funciona de manera semblant, peró per la ubicació dels sensor s’acostuma a fer-lo servir com a seguidor de línies en robots. El sensor es pot veure a sota i també es pot ajustar el seu valor llindar amb el potenciómetre que porta a la placa.</p>
+
+<p><img src="img/ky033.jpg" width="50%" /></p>
+
+<p>El codi per a detectar un obstacle es pot veure a sota. En aquest cas, quan es detecta l’únic que fa el programa és imprimir el text “Obstacle detectat!” a la consola però podem adaptar el codi per a que en aquest cas hi hagi un actuador que faci alguna cosa, com ser encendre un llum o que s’accioni un motor.</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">RPi.GPIO</span> <span class="kn">as</span> <span class="nn">GPIO</span>
+ 
+<span class="n">ObstaclePin</span> <span class="o">=</span> <span class="mi">11</span>
+ 
+<span class="k">def</span> <span class="nf">setup</span><span class="p">():</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">setmode</span><span class="p">(</span><span class="n">GPIO</span><span class="o">.</span><span class="n">BOARD</span><span class="p">)</span> 
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">ObstaclePin</span><span class="p">,</span> <span class="n">GPIO</span><span class="o">.</span><span class="n">IN</span><span class="p">,</span> <span class="n">pull_up_down</span><span class="o">=</span><span class="n">GPIO</span><span class="o">.</span><span class="n">PUD_UP</span><span class="p">)</span>
+    
+<span class="k">def</span> <span class="nf">loop</span><span class="p">():</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="mi">0</span> <span class="o">==</span> <span class="n">GPIO</span><span class="o">.</span><span class="nb">input</span><span class="p">(</span><span class="n">ObstaclePin</span><span class="p">)):</span> 
+            <span class="k">print</span><span class="p">(</span><span class="s">"Obstacle detectat! </span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+            
+<span class="k">def</span> <span class="nf">destroy</span><span class="p">():</span>
+    <span class="n">GPIO</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span> <span class="c"># Neteja els pins</span>
+    
+<span class="n">setup</span><span class="p">()</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">loop</span><span class="p">()</span>
+<span class="k">except</span> <span class="nb">KeyboardInterrupt</span><span class="p">:</span> <span class="c"># Si es pitja Ctrl + C es crida la funció destroy</span>
+    <span class="n">destroy</span><span class="p">()</span>
+</code></pre>
+</div>
+
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        
+        <p class="copyright">raspi maintained by <a href="http://github.com/niobio">niobio</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+  </body>
+</html>

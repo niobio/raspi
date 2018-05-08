@@ -14,12 +14,18 @@
 
 ### [Servo motors](motors/servos.md){:target="_blank"}
 
+### [Controlar un LED RGB](rgb_led/rgb_led.md){:target="_blank"}
+
 ### [Detecció de moviments amb infraroigs](ir/pir/pir.md){:target="_blank"}
 
 ### [Detecció de foc amb infraroigs](ir/flame/flame.md){:target="_blank"}
+
+### [Detectar obstacles amb raigs infraroigs](ir/ir_obstacle/infraroig.md){:target="_blank"}
 
 ### [Sensors d'efecte Hall](hall/hall.md){:target="_blank"}
 
 ### [Sensors de vibracions](shock/shock.md){:target="_blank"}
 
 ### [Sistema de reg automàtic](reg/reg.md){:target="_blank"}
+
+### [Controlar la càmera amb Raspberry Pi](camera/camera.md){:target="_blank"}
