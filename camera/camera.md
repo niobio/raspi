@@ -75,13 +75,34 @@ except KeyboardInterrupt:
     GPIO.cleanup()
 ```
 
+## Controlar una càmera web amb Python
+ 
+Per a controlar una càmera web amb Raspberry Pi podem fer servir l'aplicació `fswebcam`. Per instal·lar aquesta aplicació primer hem d'intsl·lar-la amb l'ordre següent en el terminal:
+
+`sudo apt-get install fswebcam`
+
+Per a prendra una imatge podem utilitzar la següent ordre al terminal:
+
+`fswebcam image.jpg`
+
+si volem espacificarr la resolució fem:
+
+`fswebcam -r 1280x720 image2.jpg`
+
+Si volem fer servir la càmera en un script de Python podem fer servir el paquet `os` per a accedir a les ordres del sistema. Un exemple d'ús pot ser el codi següent, on la càmera pren una imatge cada 15 segons:
+
+
+```python
+import time 
+import os 
+
+while True: # bucle infinit
+    os.system('fswebcam -r 320x240 -S 3 --jpeg 50 --save /home/pi/imatges/%H%M%S.jpg') # uses Fswebcam to take picture
+time.sleep(15) # this line creates a 15 second delay before repeating the loop
+```
+
 ## Referència:
 
 Per a més informació sobre com controlar la càmera amb la Raspberry Pi veure:
 
 [https://www.raspberrypi.org/magpi-issues/Essentials_Camera_v1.pdf](https://www.raspberrypi.org/magpi-issues/Essentials_Camera_v1.pdf)
-
-
-```python
-
-```
