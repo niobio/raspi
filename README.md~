@@ -29,9 +29,3 @@
 ### [Sistema de reg automàtic](reg/reg.md){:target="_blank"}
 
 ### [Controlar la càmera amb Raspberry Pi](camera/camera.md){:target="_blank"}
-
-## Internet de les coses
-
-### [Servidor web senzill amb Python](iot/bottle/bottle.md){:target="_blank"}
-
-### [Controlar les sortides GPIO a través d'internet](iot/control_gpio/control_web.md){:target="_blank"}
