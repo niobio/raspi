@@ -8,7 +8,6 @@ El sensor que es veu a la imatge inferior és un HC-SR501, es tracta d'un sensor
 
 <img src="img/PIR_2.jpg" style="centered" width="70%">
 
-<img src="img/PIR_3.jpg" style="centered" width="70%">
 
 Si vols saber més de com funcionen els PIR pots consultar <a href="https://learn.adafruit.com/pir-passive-infrared-proximity-motion-sensor/how-pirs-work" target="_blank">aquesta pàgina</a>.
 
