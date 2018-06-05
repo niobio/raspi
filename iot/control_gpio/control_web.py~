@@ -1,33 +1,3 @@
-
-# Controlar les sortides GPIO a través d'internet
-
-Veurem ara com controlar actuadors connectats als pins GPIO de la Raspberry Pi a través d'una interfície web. Per a fer això hem de tenir connectada la Raspberry Pi a internet a través de la xarxa wi-fi o ethernet (cable).
-
-Crearem un servidro web que ens permeti controlar els pins GPIO a través de la xarxa. Per a fer-lo utilitzarem el mòdul `bottle` que ens permet crear la interfície web HTML.
-
-Necessitarem el següent material:
-
-* Protoboard i cables.
-* Dos resistències de 220$\mathrm{k\Omega}$.
-* Doss diodes LED.
-* Un polsador
-
-El muntatge el podem veure a la figura següent:
-
-<img src="img/control_gpio_bb.png" width="70%">
-
-
-> **Nota:** Si necessiteu instal·lar la biblioteca `bottle` heu de posar al terminal d'ordres:
-
-> `sudo apt install python-bottle`
-
-
-
-El codi per fer funcionar el servidor web amb el qual controlar els LED i llegir l'estat del polsador és el següent:
-
-
-
-```python
 from bottle import route, run
 import RPi.GPIO as GPIO
 
@@ -43,9 +13,9 @@ GPIO.setup(switch_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 def switch_status():
     state = GPIO.input(switch_pin)
     if state:
-        return "ON"
+        return "Sense polsar"
     else:
-        return "OFF"
+        return "Polsat"
 
 def html_for_led(led):
     l = str(led)
@@ -82,12 +52,4 @@ try:
 finally:
     print('\nCleaning up')
     GPIO.cleanup()
-    
-    
-```
-
-Per a executar el programa s'ha de fer com a superusuari:
-
-`sudo python3 control_web.py`
-
 

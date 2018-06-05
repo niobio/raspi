@@ -13,17 +13,17 @@ GPIO.setup(switch_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 def switch_status():
     state = GPIO.input(switch_pin)
     if state:
-        return "Sense polsar"
+        return "ON"
     else:
-        return "Polsat"
+        return "OFF"
 
 def html_for_led(led):
     l = str(led)
-    result = "input type='button' onClick='changed'()" + l + ")' value='LED " + l + "'/>"
+    result = "<input type='button' onClick='changed'()" + l + ")' value='LED " + l + "'/>"
     return result
 
 def update_leds():
-    for i, value in enumerate(led_states)
+    for i, value in enumerate(led_states):
         GPIO.output(led_pins[i], value)
     
 @route('/')
