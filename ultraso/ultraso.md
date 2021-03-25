@@ -1,4 +1,4 @@
-#Sensor d'ultrasons HC-SR04 amb Raspberry Pi
+# Sensor d'ultrasons HC-SR04 amb Raspberry Pi
 El sensor d'ultrasons HC-SR04 s'utilitza per determinar la distància a un obstacle o objecte. Utilitza un mètode semblant al que fan servir els ratpenats per detectar objectes. El sensor compta amb un emisor d'ultrasons i un receptor de l'eco. El càlcul de la distància es fa multiplicant la velocitat del so pel temps transcorregut entre l'instant d'enviament del senyal i l'instant de recepció i dividint-lo per 2, ja que el temps inclou l'interval d'anada i de tornada del senyal.
 
 Distància = velocitat_so * temps_mesurat / 2
