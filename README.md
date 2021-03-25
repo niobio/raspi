@@ -24,6 +24,8 @@
 
 ### [Detectar obstacles amb raigs infraroigs](ir/ir_obstacle/infraroig.md){:target="_blank"}
 
+### [Detectar obstacles amb ultrasons](ultraso/ultraso.md){:target="_blank"}
+
 ### [Sensors d'efecte Hall](hall/hall.md){:target="_blank"}
 
 ### [Sensors de vibracions](shock/shock.md){:target="_blank"}
